@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estructuras de Control</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        .card h2 {
+            font-size: 1.2rem;
+            color: #34495e;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        .form-group {
+            margin-bottom: 12px;
+        }
+        label {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .resultado {
+            margin-top: 15px;
+            padding: 12px;
+            background-color: #eef9f5;
+            border-left: 4px solid #2ecc71;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        .resultado p {
+            margin: 4px 0;
+        }
+        ul {
+            padding-left: 20px;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Estructuras de Control en Aplicaciones Web</h1>
+    <div class="container">
+        <div class="card">
+            <h2>Escenario 1: Carrito de Compras (Condicionales)</h2>
+            <div class="form-group">
+                <label for="monto">Monto Total ($):</label>
+                <input type="number" id="monto" value="600">
+            </div>
+            <div class="form-group">
+                <label for="edad">Edad del Cliente:</label>
+                <input type="number" id="edad" value="65">
+            </div>
+            <div class="form-group">
+                <label for="vip">¿Membresía VIP?</label>
+                <select id="vip">
+                    <option value="false">No</option>
+                    <option value="true">Sí</option>
+                </select>
+            </div>
+            <button onclick="ejecutarEscenario1()">Calcular Descuento</button>
+            
+            <div id="res1" class="resultado">
+                Haga clic en el botón para calcular.
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Escenario 2: Inventario (Ciclo For)</h2>
+            <p style="font-size: 0.85rem; color: #666;">Filtra productos disponibles en stock y calcula el valor total del inventario.</p>
+            <button onclick="ejecutarEscenario2()">Procesar Inventario</button>
+            
+            <div id="res2" class="resultado">
+                Haga clic para consultar el catálogo.
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Escenario 3: Agenda de Turnos (Ciclo While)</h2>
+            <div class="form-group">
+                <label for="horaInicio">Hora Inicio (hrs):</label>
+                <input type="number" id="horaInicio" value="9">
+            </div>
+            <div class="form-group">
+                <label for="horaFin">Hora Fin (hrs):</label>
+                <input type="number" id="horaFin" value="17">
+            </div>
+            <div class="form-group">
+                <label for="maxTurnos">Límite de Cupos:</label>
+                <input type="number" id="maxTurnos" value="5">
+            </div>
+            <button onclick="ejecutarEscenario3()">Generar Turnos</button>
+            
+            <div id="res3" class="resultado">
+                Haga clic para generar la agenda.
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function ejecutarEscenario1() {
+            const montoTotal = parseFloat(document.getElementById('monto').value) || 0;
+            const edadCliente = parseInt(document.getElementById('edad').value) || 0;
+            const esVIP = document.getElementById('vip').value === 'true';
+
+            let porcentajeDescuento = 0;
+
+            if (montoTotal >= 1000 || esVIP) {
+                porcentajeDescuento = 0.20; // 20%
+            } else if (montoTotal >= 500 && edadCliente >= 60) {
+                porcentajeDescuento = 0.15; // 15%
+            } else if (montoTotal >= 500) {
+                porcentajeDescuento = 0.10; // 10%
+            } else {
+                porcentajeDescuento = 0.05; // 5%
+            }
+
+            const descuento = montoTotal * porcentajeDescuento;
+            const totalFinal = montoTotal - descuento;
+
+            document.getElementById('res1').innerHTML = `
+                <p><strong>Monto Original:</strong> $${montoTotal.toFixed(2)}</p>
+                <p><strong>Descuento (${porcentajeDescuento * 100}%):</strong> -$${descuento.toFixed(2)}</p>
+                <p><strong>Total a Pagar:</strong> $${totalFinal.toFixed(2)}</p>
+            `;
+        }
+
+        function ejecutarEscenario2() {
+            const productos = [
+                { nombre: "Teclado Mecánico", precio: 80, stock: 15 },
+                { nombre: "Mouse Inalámbrico", precio: 25, stock: 0 },
+                { nombre: "Monitor 24 pulgadas", precio: 200, stock: 8 },
+                { nombre: "Audífonos Gamer", precio: 50, stock: 0 },
+                { nombre: "Silla Ergonómica", precio: 150, stock: 5 }
+            ];
+
+            let html = "<p><strong>Productos disponibles:</strong></p><ul>";
+            let totalValorInventario = 0;
+            let disponibles = 0;
+
+            for (const prod of productos) {
+                if (prod.stock > 0) {
+                    totalValorInventario += prod.precio * prod.stock;
+                    disponibles++;
+                    html += `<li>${prod.nombre} - $${prod.precio} (Stock: ${prod.stock})</li>`;
+                }
+            }
+            html += "</ul>";
+            html += `<p><strong>Disponibles:</strong> ${disponibles} de ${productos.length}</p>`;
+            html += `<p><strong>Valor Total en Stock:</strong> $${totalValorInventario}</p>`;
+
+            document.getElementById('res2').innerHTML = html;
+        }
+
+        function ejecutarEscenario3() {
+            const horaInicio = parseInt(document.getElementById('horaInicio').value) || 9;
+            const horaFin = parseInt(document.getElementById('horaFin').value) || 17;
+            const maxTurnos = parseInt(document.getElementById('maxTurnos').value) || 5;
+            let horaActual = horaInicio;
+            let contador = 0;
+            let html = "<ul>";
+            while (horaActual < horaFin && contador < maxTurnos) {
+                contador++;
+                html += `<li>Turno #${contador}: ${horaActual}:00 hrs</li>`;
+                horaActual++;
+            }
+            html += "</ul>";
+
+            if (contador === maxTurnos && horaActual < horaFin) {
+                html += "<p>⚠️ <em>Límite máximo de cupos alcanzado.</em></p>";
+            } else {
+                html += "<p>✅ <em>Jornada completada.</em></p>";
+            }
+            document.getElementById('res3').innerHTML = html;
+        }
+        ejecutarEscenario1();
+        ejecutarEscenario2();
+        ejecutarEscenario3();
+    </script>
+</body>
+</html>
